@@ -1,88 +1,49 @@
 import React, { useState } from 'react'
+import { NewTodoForm } from './NewTodoForm';
+import { TodoList } from './TodoList';
 
 export default function App() {
-  // used for inputting New Item
-  const [newItem, setNewItem] = useState("");
-  
+
   // Used for handleSubmit()
   const [todos, setTodos] = useState([]);
-   
-  // Creates brand new todo and adds to list
-  function handleSubmit(e) {
-    // prevents page from refreshing
-    e.preventDefault() 
 
-    // Any time you need to use the CURRENT value you need to pass a function,
-    // otherwise you can pass the value like setNewItem for <input>
+  function addTodo(title) {
     setTodos(currentTodos => {
       return [
         ...currentTodos,
-        { id: crypto.randomUUID(), title: newItem, completed: false }, 
+        { id: crypto.randomUUID(), title, completed: false }, 
       ]
     })
-
-    setNewItem("");
   }
+
+
 
   //update todos to change the id of the todo passed in here to be completed based on the "completed" flag
   function toggleTodo(id, completed) {
-    setTodos(currentTodos => {
-      return currentTodos.map(todo => {
+    setTodos((currentTodos) => {
+      return currentTodos.map((todo) => {
         if (todo.id === id) {
-          return {...todo, completed}
+          return { ...todo, completed };
         }
-        
+
         return todo; // if id != id then return todo with no changes at all
-      })
-    })
+      });
+    });
   }
 
   function deleteTodo(id) {
-    setTodos(currentTodos => {
-      return currentTodos.filter(todo => todo.id !== id)
-    })
+    setTodos((currentTodos) => {
+      return currentTodos.filter((todo) => todo.id !== id);
+    });
   }
 
   return (
     <>
-      <form onSubmit={handleSubmit} className='new-item-form'>
-        <div className='form-row'>
-          <label htmlFor="text" id="item"></label>
-          <input 
-          value={newItem} 
-          onChange={e => setNewItem(e.target.value)} 
-          type="text" 
-          id="item" 
-          />
-        </div>
-        <button className='btn'>Add</button>
-      </form>
-      <h1 className='header'>Todo List</h1>
-      <ul className='list'>
-        {todos.length === 0 && "No todos"}
-        {todos.map(todo => {
-          return (
-          <li key={todo.id}>
-          <label>
-            <input 
-            type="checkbox" 
-            checked={todo.completed} 
-            onChange={e => toggleTodo(todo.id, e.target.checked)}
-            />
-            {todo.title}
-          </label>
-          <button 
-          onClick={() => deleteTodo(todo.id)}
-          className='btn btn-danger'
-          >
-          Delete
-          </button>
-        </li>
-        )
-        })}
-      </ul>
+      <NewTodoForm onSubmit={addTodo}/>
+      <h1 className="header">Todo List</h1>
+      <TodoList todos = {todos} toggleTodo={toggleTodo} deleteTodo={deleteTodo}/>
     </>
-  )
+  );
 }
 
 /**
@@ -97,3 +58,16 @@ export default function App() {
  * Any time yo uchange state, it needs to create a brand new object and change a property on it
  * 
  */
+
+/* Any time you need to use the CURRENT value you need to pass a function,
+    otherwise you can pass the value like setNewItem for <input>
+    The code below needs to live inside of the App because that's where the todos useState
+    lives && it can't be moved into the form as it's also needed for the list HTML here.
+    But need to find a way to update the state in order to add todos */
+    
+    // setTodos(currentTodos => {
+    //   return [
+    //     ...currentTodos,
+    //     { id: crypto.randomUUID(), title: newItem, completed: false }, 
+    //   ]
+    // })
