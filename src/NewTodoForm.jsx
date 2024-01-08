@@ -2,7 +2,7 @@ import { useState } from "react";
 
 export function NewTodoForm({onSubmit}) {
 
-  // used for inputting New Item
+  // used for inputting New Item in the textbox
   const [newItem, setNewItem] = useState("");
 
     // Creates brand new todo and adds to list
@@ -20,6 +20,8 @@ export function NewTodoForm({onSubmit}) {
     setNewItem("");
   }
 
+    // onSubmit eventListener calls handleSubmit function that adds the todos.
+
     return (
         <form onSubmit={handleSubmit} className='new-item-form'>
         <div className='form-row'>
@@ -35,3 +37,20 @@ export function NewTodoForm({onSubmit}) {
       </form>
     )
 }
+
+/**
+ * NOTES: 
+ * input value={newItem}. Default value is inside the useState signature in this case, "". 
+ * The dafault updates whenever the item changes.
+ * 
+ * In React. if you wanna handle different eventsListeners, you use on(WhateverEvent). 
+ * In this case, onChange (everytime I click a single key, it calls onChange) 
+ * (works differently than vanilla JS which works just on Blur, or when you stop changin something
+ * as you'd use onInput if you wanted something to happen everytime you changed the value in the input).
+ * 
+ * onChange={e => setNewItem(e.target.value)}. Takes an event (e) object, and calls setNewItem() with the e.target.value:
+ * Takes the value of the input, sets it as new item value with the setNewItem f(n) and puts the value in newItem.    
+ * 
+ * If there was no onChange, the value would stay "" forever.
+ * 
+ */
