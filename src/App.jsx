@@ -77,6 +77,14 @@ export default function App() {
  * ***YOU CAN'T MANUALLY CHANGE STATE BECAUSE IT'S IMMUTABLE***
  * Any time you change state, it needs to create a brand new object and changes/update a property on it
  * 
+ * Always put hooks at the TOP of the file. 
+ * They can never be called conditionally/in ifs/in loops/after returns 
+ * They have to run always in the same number 
+ * 
+ * React components almost always have the same structure: 
+ * 1. Hooks at the top
+ * 2. Helper functions/code that parses data
+ * 3. Finally, "return" that has all of the jsx.
  */
 
 /* Any time you need to use/modify the CURRENT value you need to pass a function to the set state function.
@@ -92,4 +100,4 @@ export default function App() {
     //     ...currentTodos,
     //     { id: crypto.randomUUID(), title: newItem, completed: false }, 
     //   ]
-    // })
+    // }) 
